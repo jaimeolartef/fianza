@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../template.xhtml" >
+        <ui:define name="encabezado">
+
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="formUsuario" prependId="false" style="width: 100%">
+                <p:panel collapsed="false" header="Datos Usuario">
+                    <h:panelGrid columns="4" cellpadding="4">
+                        <p:outputLabel value="* Tipo Documento: "/>
+                        <p:selectOneMenu id="slTipDoc" style="width: 54%;" value="#{usuarioFormBean.tipoDocumento}">
+                            <f:selectItem itemValue="0" itemLabel="Seleccione"/>
+                            <f:selectItems value="#{usuarioFormBean.listaDocumentos}" 
+                                           var="tipdoc"  
+                                           itemValue="#{tipdoc.idLista}"
+                                           itemLabel="#{tipdoc.descripcion}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="* Nº Documento: "/>
+                        <h:panelGroup>
+                            <p:inputText style="width: 67%" 
+                                         disabled="#{usuarioFormBean.actualizar}" 
+                                         value="#{usuarioFormBean.numDocumento}" />
+                            &nbsp;&nbsp;&nbsp;
+                            <p:commandButton id="btnBuscar" 
+                                             title="Buscar"                                              
+                                             icon="ui-icon-search">
+                                <p:ajax listener="#{usuarioFormBean.buscar()}"
+                                        process="@all"
+                                        update=":formUsuario :msg"/>
+                            </p:commandButton>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="* Nombre: "/>
+                        <p:inputText style="width: 80%" value="#{usuarioFormBean.nombre}"/>
+
+                        <p:outputLabel value="* Rol: "/>
+                        <p:selectOneMenu id="slRol" style="width: 54%;" value="#{usuarioFormBean.rol}">
+                            <f:selectItem itemValue="0" itemLabel="Seleccione"/>
+                            <f:selectItems value="#{usuarioFormBean.roles}" 
+                                           var="rol" 
+                                           itemValue="#{rol.idRol}"
+                                           itemLabel="#{rol.nombre}"/>
+                        </p:selectOneMenu>
+                        
+                         
+
+                        <p:outputLabel value="* Codigo: "/>
+                        <p:inputText style="width: 80%" disabled="#{usuarioFormBean.actualizar}" value="#{usuarioFormBean.codigo}" />
+
+                        
+
+                        <p:outputLabel value="Correo Electronico: "/>
+                        <p:inputText style="width: 80%" value="#{usuarioFormBean.correo}" >
+                            <p:ajax event="blur" listener="#{usuarioFormBean.email()}" update=":msg"/>
+                        </p:inputText>
+
+                    </h:panelGrid>
+                </p:panel>
+                <p:spacer height="20px"/>
+                <div align="right">
+                    <p:commandButton id="btnNuevo"
+                                     value="Nuevo"
+                                     actionListener="#{usuarioFormBean.limpiar()}"
+                                     update=":formUsuario">
+                        
+                    </p:commandButton>
+                    <p:commandButton id="btnConfiGuardar" 
+                                     value="Guardar"
+                                     process="@all"
+                                     actionListener="#{usuarioFormBean.validar()}"
+                                     update=":msg :formConf">
+                    </p:commandButton>
+                </div>
+            </h:form>
+
+            <p:dialog id="dlgConf"
+                      widgetVar="dlgConfWV"
+                      modal="true"
+                      resizable="false">
+                <h:form prependId="false" id="formConf">
+
+                    <h:panelGrid columns="1" cellpadding="5">
+                        <p:outputLabel value="Por favor asignar una contraseña al usuario que desea guardar."/>
+                        <p:selectBooleanCheckbox id="bchk" 
+                                                 itemLabel="Guardar usuario sin actualizar contraseña" 
+                                                 value="#{usuarioFormBean.actualizarSinClave}"                                                     
+                                                 rendered="#{usuarioFormBean.actualizar}">
+                            <p:ajax event="change" listener="#{usuarioFormBean.deshabilitarClave()}" update=":formConf" />
+                        </p:selectBooleanCheckbox>
+                    </h:panelGrid>
+                    <br/>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel value="Contraseña: "/>
+                        <p:password maxlength="20" 
+                                    id="txtclave"
+                                    widgetVar="txtClaveWV"
+                                    value="#{usuarioFormBean.priClave}"
+                                    feedback="true" 
+                                    style="width: 90%"
+                                    disabled="#{usuarioFormBean.deshabilitarclave}"
+                                    promptLabel="Digite su contraseña, maximo de 20 caracteres"
+                                    weakLabel="Nivel de seguridad: Baja"
+                                    goodLabel="Nivel de seguridad: Media"
+                                    strongLabel="Nivel de seguridad: Alta"/>
+
+                        <p:outputLabel value="Confirmar Contraseña: "/>
+                        <p:password maxlength="20" 
+                                    id="txtclaveconf"
+                                    widgetVar="txtclaveconfWV"
+                                    value="#{usuarioFormBean.confClave}" 
+                                    feedback="true" 
+                                    style="width: 90%"
+                                    disabled="#{usuarioFormBean.deshabilitarclave}"
+                                    promptLabel="Digite su contraseña, maximo de 20 caracteres"
+                                    weakLabel="Nivel de seguridad: Baja"
+                                    goodLabel="Nivel de seguridad: Media"
+                                    strongLabel="Nivel de seguridad: Alta"/>
+                    </h:panelGrid>
+
+                    <p:spacer height="10px"/>
+                    <div align="right">
+                        <p:commandLink value="Cancelar"
+                                       onclick="PF('dlgConfWV').hide();"/>
+                        &nbsp;
+                        <p:commandButton id="btnGuardar" 
+                                         value="Aceptar"
+                                         action="#{usuarioFormBean.guardar()}"
+                                         process="@form"
+                                         oncomplete="PF('dlgConfWV').hide();"
+                                         update=":formUsuario :formConf :msg">
+                        </p:commandButton>
+                    </div>
+                </h:form>                
+            </p:dialog>
+
+
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+     <h:head>
+        <title>Ingreso al sistema.</title>
+        <script type="text/css">
+            #pie{
+            height: 40px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            clear: both;
+            }
+        </script>
+    </h:head>
+    <!--style="background-image: url('image/fondo.png'); background-size: 100%"-->
+    <h:body> 
+        <h:form prependId="false">
+            <p:spacer height="120"/>
+            <div align="center"> 
+                <p:panel header="Ingreso al sistema" style="margin-bottom: 20px; width: 550px;background-color:  #00447f;">
+
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="images/unire.png" width="150"  alt="login"/>
+                                <p:spacer height="30"/>
+                            </td>
+                            <td>
+                                <h:panelGrid columns="2" cellpadding="6">
+                                    <h:outputLabel for="txtusuario" value="Usuario:" style="color: white"/>
+                                    <p:inputText id="txtusuario" placeholder="Digite usuario" value="#{IndexBean.nombre}" label="txtusuario" />
+
+                                    <h:outputLabel for="txtclave" value="Contraseña:" style="color: white"/>
+                                    <p:password id="txtclave" placeholder="Digite contraseña" value="#{IndexBean.contraseña}" label="txtclave" />
+
+
+                                    <f:facet name="footer">
+                                        <div align="right">
+                                            <p:commandButton value="Ingresar"> 
+                                                <p:ajax listener="#{IndexBean.ingresar()}" 
+                                                             update="txtusuario txtclave growl"
+                                                             process="@all">
+                                                </p:ajax>
+                                            </p:commandButton>
+                                        </div>
+                                    </f:facet>
+
+                                </h:panelGrid>                                
+                            </td>
+                        </tr> 
+                    </table>
+
+                    <div align="right">
+                        <p:commandLink value="Recuperar Contraseña"
+                                       style="color: white"
+                                       oncomplete="PF('dlgClave').show();"/>
+                    </div>
+
+                </p:panel>                
+            </div>
+            <div align="center">
+                <p:outputLabel styleClass="pie" style="color: graytext" value="Versión 01. Copyright ©2017. Todos los derechos reservados."/>
+            </div>
+            <p:growl id="growl" showDetail="true" life="3000" />            
+        </h:form>
+        <p:dialog header="Recuperar Contraseña" resizable="false" widgetVar="dlgClave" modal="true">
+            <p:growl id="growlDlg" showDetail="true" life="2000" />
+            <h:form>                
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText value="Ingrese el correo electronico:" />
+                        </td>
+                        <td>
+                            <p:spacer width="20px"/>
+                            <p:inputText value="#{IndexBean.correo}" placeholder="ejemplo@ejemplo.com"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            <div align="right">
+                                <p:commandButton value="Enviar"
+                                                 action="#{IndexBean.recupeClave()}"
+                                                 update=":growlDlg"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+        </p:dialog>        
+    </h:body>    
+</html>
+
+

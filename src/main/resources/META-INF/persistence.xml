@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="my_persistence_unit">
+    <class>com.mycompany.fianza.entidades.Inmobiliarias</class>
+    <class>com.mycompany.fianza.entidades.Permisos</class>
+    <class>com.mycompany.fianza.entidades.Promotores</class>
+    <class>com.mycompany.fianza.entidades.Roles</class>
+    <class>com.mycompany.fianza.entidades.Menus</class>
+    <class>com.mycompany.fianza.entidades.Usuarios</class>
+    <class>com.mycompany.fianza.entidades.Solicitudes</class>
+    <class>com.mycompany.fianza.entidades.Documentos</class>
+    <class>com.mycompany.fianza.entidades.Personas</class>
+    <class>com.mycompany.fianza.entidades.Inmuebles</class>
+    <class>com.mycompany.fianza.entidades.DetallePersonas</class>
+    <class>com.mycompany.fianza.entidades.Listas</class>
+    <class>com.mycompany.fianza.entidades.ListasGrupo</class>
+    <class>com.mycompany.fianza.entidades.Constantes</class>
+  </persistence-unit>
+</persistence>

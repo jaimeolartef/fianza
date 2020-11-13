@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition template="../template.xhtml" >
+        <ui:define name="encabezado">            
+            <style type="text/css">
+
+            </style>
+        </ui:define>
+        <ui:define name="content">
+
+            <h:form id="frmrol" prependId="false">
+                <p:panel id="crear" header="Crear" style="margin-bottom: 20px">
+                    <table cellpadding="7">
+                        <tr>
+                            <td style="width: 100px;">
+                                <p:outputLabel value="Nombre rol:"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{rolFormBean.nombreRol}" style="width: 40%; "/>
+                                &nbsp;&nbsp;&nbsp;
+                                <p:commandButton id="btnBuscar" 
+                                                 title="Buscar"                                              
+                                                 icon="ui-icon-search">
+                                    <p:ajax listener="#{rolFormBean.buscarRol()}"
+                                            process="@all"
+                                            update=":msg :frmDlgRol"/>
+                                </p:commandButton>
+                            </td> 
+                        </tr>                       
+                        <tr>                            
+                            <td>
+                                <p:outputLabel value="Asignar menu:"/>
+                            </td>
+                            <td>
+                                <p:tree id="arbolNodos"
+                                        value="#{rolFormBean.menusArbol}"
+                                        var="arbol"
+                                        selectionMode="checkbox"
+                                        selection="#{rolFormBean.nodoSeleccionado}">
+                                    <p:treeNode icon="ui-icon-document">
+                                        <h:outputText value="#{arbol.nombre}" />
+                                    </p:treeNode>
+                                </p:tree>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+
+                <div align="right">
+                    <p:commandButton id="btnNuevo" 
+                                     value="Nuevo"
+                                     actionListener="#{rolFormBean.limpiar()}"
+                                     update=":msg frmrol"/>
+                    <p:spacer width="10" height="0"/>
+                    <p:commandButton id="btnGuardar" 
+                                     actionListener="#{rolFormBean.guardar()}"
+                                     value="Guardar"
+                                     update=":msg frmrol"/>
+                </div>
+
+            </h:form>
+
+            <p:dialog id="dlgRol"
+                      widgetVar="dlgRolWV"
+                      modal="true"
+                      width="30%"
+                      resizable="false"
+                      header="Roles del sistema">
+                <h:form id="frmDlgRol">
+                    <p:dataTable id="dtRolBuscar"
+                                 value="#{rolFormBean.roles}"
+                                 var="rol"
+                                 emptyMessage="No se encontraron resultados."
+                                 rows="10"
+                                 rowKey="#{rol.idRol}"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20"
+                                 selectionMode="single"
+                                 selection="#{rolFormBean.rolSeleccionado}">
+                        <p:ajax event="rowSelect" listener="#{rolFormBean.cargarRol()}" update=":msg :frmrol" oncomplete=";PF('dlgRolWV').hide();"/>
+                        <p:column headerText="Rol"
+                                  width="20%" >
+                            <p:outputLabel value="#{rol.nombre}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+
+</html>

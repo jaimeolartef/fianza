@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../template.xhtml" >
+        <ui:define name="encabezado">
+
+        </ui:define>
+        <ui:define name="content">            
+            <h:form id="formClave" prependId="false">
+                <div align="center">                    
+                <!--<p:spacer width="30%"/>-->
+                <p:panel collapsed="false" header="Cambio Contraseña" style="width: 50%">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel value="Contraseña Actual: "/>                        
+                        <p:password maxlength="20" 
+                                    id="txtclaveActual"
+                                    widgetVar="txtClaveWV"
+                                    value="#{cambiarClaveFormBean.actualClave}"
+                                    style="width: 90%"
+                                    promptLabel="Digite su contraseña actual"/>
+
+                        <p:outputLabel value="Nueva Contraseña: "/>                        
+                        <p:password maxlength="20" 
+                                    id="txtclave"
+                                    widgetVar="txtClaveWV"
+                                    value="#{cambiarClaveFormBean.priclave}"
+                                    feedback="true" 
+                                    style="width: 90%"
+                                    promptLabel="Digite su contraseña, maximo de 20 caracteres"
+                                    weakLabel="Nivel de seguridad: Baja"
+                                    goodLabel="Nivel de seguridad: Media"
+                                    strongLabel="Nivel de seguridad: Alta"/>
+
+                        <p:outputLabel value="Confirmar Contraseña: "/>
+                        <p:password maxlength="20" 
+                                    id="txtclaveconf"
+                                    widgetVar="txtclaveconfWV"
+                                    value="#{cambiarClaveFormBean.confClave}" 
+                                    feedback="true" 
+                                    style="width: 90%"
+                                    promptLabel="Digite su contraseña, maximo de 20 caracteres"
+                                    weakLabel="Nivel de seguridad: Baja"
+                                    goodLabel="Nivel de seguridad: Media"
+                                    strongLabel="Nivel de seguridad: Alta"/>
+                    </h:panelGrid>
+
+                    <p:spacer height="10px"/>
+                    <div align="right">
+                        <p:commandButton id="btnGuardar" 
+                                         value="Aceptar"
+                                         action="#{cambiarClaveFormBean.guardar()}"
+                                         process="@all"
+                                         update=":formClave :msg">
+                        </p:commandButton>
+                    </div>
+                </p:panel>
+                </div>                
+            </h:form>            
+        </ui:define>
+    </ui:composition>
+</html>
+
